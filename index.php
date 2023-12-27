@@ -60,8 +60,19 @@ $months = $stmt->fetchAll(PDO::FETCH_COLUMN);
                     $this_month_gross = 0;
                     $monthly_liability = array();
                     foreach ($liabilities as $liability) {
-                        $monthly_liability[$liability] = 0;
+                        // Prepare and execute the SELECT query
+                        $stmt = $connection->prepare("SELECT amount FROM monthly_liabilities WHERE month = :month AND liability = :liability");
+                        $stmt->bindParam(':month', $month, PDO::PARAM_STR);
+                        $stmt->bindParam(':liability', $liability, PDO::PARAM_STR);
+                        $stmt->execute();
+                    
+                        // Fetch the result
+                        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                    
+                        // Assign the amount to $monthly_liability[$liability] or 0 if not found
+                        $monthly_liability[$liability] = $result ? $result['amount'] : 0;
                     }
+                    
                     // Get the months Gross
                     // Prepare and execute the SELECT query
                     $stmt = $connection->prepare("SELECT amount FROM monthly_income WHERE month = :month");
