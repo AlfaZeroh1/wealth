@@ -75,10 +75,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="mb-3">
             <label for="liability" class="form-label">Select Liability:</label>
             <select class="form-select" id="liability" name="liability" required>
-                <option selected disabled>Choose a liability</option>
+                <!-- <option selected disabled>Choose a liability</option> -->
                 <?php
+                $ii=0;
                 foreach ($liabilities as $liability) {
-                    echo "<option value=\"$liability\">$liability</option>";
+                    
+                    $selected = $ii?'selected':'';
+                    echo "<option value=\"$liability\" $selected>$liability</option>";
+                    $ii++;
                 }
                 ?>
             </select>
